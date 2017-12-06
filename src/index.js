@@ -25,6 +25,7 @@ const defaultSettings = () => ({
   useBothWheelAxes: false,
   wheelPropagation: false,
   wheelSpeed: 1,
+  snapToY: null,
 });
 
 const handlers = {

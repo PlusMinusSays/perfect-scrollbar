@@ -151,8 +151,19 @@ function updateCss(element, i) {
     left: i.scrollbarXLeft,
     width: i.scrollbarXWidth - i.railBorderXWidth,
   });
+
+
+  let topValue = snapValue(i.scrollbarYTop)
   CSS.set(i.scrollbarY, {
-    top: i.scrollbarYTop,
+    top: topValue
     height: i.scrollbarYHeight - i.railBorderYWidth,
   });
+
+  function snapValue(value) {
+    var snapValue = i.settings.snapToY
+    if(isNaN(i.settings.snapValue)) return value
+    // play w this?
+    var boost = 0; //0.4 * (value > element.scrollTop ? 1 : -1)
+    return Math.round((value / snapValue) + boost) * snapValue;
+  }
 }
