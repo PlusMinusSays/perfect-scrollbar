@@ -155,7 +155,7 @@ function updateCss(element, i) {
 
   let topValue = snapValue(i.scrollbarYTop)
   CSS.set(i.scrollbarY, {
-    top: topValue
+    top: topValue,
     height: i.scrollbarYHeight - i.railBorderYWidth,
   });
 

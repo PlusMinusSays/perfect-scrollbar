@@ -462,10 +462,21 @@ function updateCss(element, i) {
     left: i.scrollbarXLeft,
     width: i.scrollbarXWidth - i.railBorderXWidth,
   });
+
+
+  var topValue = snapValue(i.scrollbarYTop);
   set(i.scrollbarY, {
-    top: i.scrollbarYTop,
+    top: topValue,
     height: i.scrollbarYHeight - i.railBorderYWidth,
   });
+
+  function snapValue(value) {
+    var snapValue = i.settings.snapToY;
+    if(isNaN(i.settings.snapValue)) { return value }
+    // play w this?
+    var boost = 0; //0.4 * (value > element.scrollTop ? 1 : -1)
+    return Math.round((value / snapValue) + boost) * snapValue;
+  }
 }
 
 var clickRail = function(i) {
@@ -721,7 +732,7 @@ var wheel = function(i) {
       element.scrollTop + element.offsetHeight === element.scrollHeight;
     var isLeft = element.scrollLeft === 0;
     var isRight =
-      element.scrollLeft + element.offsetWidth === element.offsetWidth;
+      element.scrollLeft + element.offsetWidth === element.scrollWidth;
 
     var hitsBound;
 
@@ -1089,6 +1100,7 @@ var defaultSettings = function () { return ({
   useBothWheelAxes: false,
   wheelPropagation: false,
   wheelSpeed: 1,
+  snapToY: null,
 }); };
 
 var handlers = {
