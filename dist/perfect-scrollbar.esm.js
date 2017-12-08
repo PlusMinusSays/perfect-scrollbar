@@ -548,11 +548,10 @@ function bindMouseScrollHandler(
   var scrollBy = null;
 
   function mouseMoveHandler(e) {
-    var scrollTop = startingScrollTop + scrollBy * (e[pageY] - startingMousePageY);
-      
-    if(i.settings.snapToY) { scrollTop = snapValue(scrollTop, i.settings.snapToY); }
+    var st = startingScrollTop + scrollBy * (e[pageY] - startingMousePageY);
+    element[scrollTop] = i.settings.snapToY ? snapValue(st, i.settings.snapToY) : st;
 
-    element[scrollTop] = scrollTop;
+    console.log('set el st to', element[scrollTop]);
 
     addScrollingClass(i, y);
     updateGeometry(i);
