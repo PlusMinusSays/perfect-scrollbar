@@ -2,6 +2,7 @@ import * as CSS from '../lib/css';
 import * as DOM from '../lib/dom';
 import { addScrollingClass, removeScrollingClass } from '../lib/class-names';
 import updateGeometry from '../update-geometry';
+import snapValue from '../snap-value';
 import { toInt } from '../lib/util';
 
 export default function(i) {
@@ -47,8 +48,12 @@ function bindMouseScrollHandler(
   let scrollBy = null;
 
   function mouseMoveHandler(e) {
-    element[scrollTop] =
-      startingScrollTop + scrollBy * (e[pageY] - startingMousePageY);
+    let scrollTop = startingScrollTop + scrollBy * (e[pageY] - startingMousePageY)
+      
+    if(i.settings.snapToY) scrollTop = snapValue(scrollTop, i.settings.snapToY)
+
+    element[scrollTop] = scrollTop
+
     addScrollingClass(i, y);
     updateGeometry(i);
 

@@ -461,23 +461,10 @@ function updateCss(element, i) {
     width: i.scrollbarXWidth - i.railBorderXWidth,
   });
 
-
-  var topValue = snapValue(i.scrollbarYTop);
   set(i.scrollbarY, {
-    top: topValue,
+    top: i.scrollbarYTop,
     height: i.scrollbarYHeight - i.railBorderYWidth,
   });
-
-  function snapValue(value) {
-
-    console.log('snapValue');
-
-    var snapValue = i.settings.snapToY;
-    if(isNaN(snapValue)) { return value }
-    // play w this?
-    var boost = 0; //0.4 * (value > element.scrollTop ? 1 : -1)
-    return Math.round((value / snapValue) + boost) * snapValue;
-  }
 }
 
 var clickRail = function(i) {
@@ -508,6 +495,18 @@ var clickRail = function(i) {
 
     e.stopPropagation();
   });
+};
+
+var snapValue = function(value, snapValue) {
+
+  // play w this?
+  var boost = 0; //0.4 * (value > element.scrollTop ? 1 : -1)
+  snapped = Math.round((value / snapValue) + boost) * snapValue;
+
+  console.log('snapValue', value, snapped);
+
+  return snapped    
+
 };
 
 var dragThumb = function(i) {
@@ -551,8 +550,12 @@ function bindMouseScrollHandler(
   var scrollBy = null;
 
   function mouseMoveHandler(e) {
-    element[scrollTop] =
-      startingScrollTop + scrollBy * (e[pageY] - startingMousePageY);
+    var scrollTop = startingScrollTop + scrollBy * (e[pageY] - startingMousePageY);
+      
+    if(i.settings.snapToY) { scrollTop = snapValue(scrollTop, i.settings.snapToY); }
+
+    element[scrollTop] = scrollTop;
+
     addScrollingClass(i, y);
     updateGeometry(i);
 
