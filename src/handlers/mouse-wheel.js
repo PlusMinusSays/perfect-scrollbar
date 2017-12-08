@@ -1,6 +1,7 @@
 import * as CSS from '../lib/css';
 import cls from '../lib/class-names';
 import updateGeometry from '../update-geometry';
+import snapValue from '../snap-value';
 import { env } from '../lib/util';
 
 export default function(i) {
@@ -118,7 +119,9 @@ export default function(i) {
     if (!i.settings.useBothWheelAxes) {
       // deltaX will only be used for horizontal scrolling and deltaY will
       // only be used for vertical scrolling - this is the default
-      element.scrollTop -= deltaY * i.settings.wheelSpeed;
+      let st = deltaY * i.settings.wheelSpeed
+      element.scrollTop -= i.settings.snapToY ? snapValue(st, i.settings.snapToY) : st
+
       element.scrollLeft += deltaX * i.settings.wheelSpeed;
     } else if (i.scrollbarYActive && !i.scrollbarXActive) {
       // only vertical scrollbar is active and useBothWheelAxes option is

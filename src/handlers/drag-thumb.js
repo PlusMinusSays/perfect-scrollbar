@@ -51,8 +51,6 @@ function bindMouseScrollHandler(
     let st = startingScrollTop + scrollBy * (e[pageY] - startingMousePageY)
     element[scrollTop] = i.settings.snapToY ? snapValue(st, i.settings.snapToY) : st
 
-    console.log('set el st to', element[scrollTop])
-
     addScrollingClass(i, y);
     updateGeometry(i);
 

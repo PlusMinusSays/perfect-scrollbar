@@ -551,8 +551,6 @@ function bindMouseScrollHandler(
     var st = startingScrollTop + scrollBy * (e[pageY] - startingMousePageY);
     element[scrollTop] = i.settings.snapToY ? snapValue(st, i.settings.snapToY) : st;
 
-    console.log('set el st to', element[scrollTop]);
-
     addScrollingClass(i, y);
     updateGeometry(i);
 
@@ -839,7 +837,9 @@ var wheel = function(i) {
     if (!i.settings.useBothWheelAxes) {
       // deltaX will only be used for horizontal scrolling and deltaY will
       // only be used for vertical scrolling - this is the default
-      element.scrollTop -= deltaY * i.settings.wheelSpeed;
+      var st = deltaY * i.settings.wheelSpeed;
+      element.scrollTop -= i.settings.snapToY ? snapValue(st, i.settings.snapToY) : st;
+
       element.scrollLeft += deltaX * i.settings.wheelSpeed;
     } else if (i.scrollbarYActive && !i.scrollbarXActive) {
       // only vertical scrollbar is active and useBothWheelAxes option is
