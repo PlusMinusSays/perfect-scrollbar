@@ -471,8 +471,11 @@ function updateCss(element, i) {
   });
 
   function snapValue(value) {
+
+    console.log('snapValue');
+
     var snapValue = i.settings.snapToY;
-    if(isNaN(i.settings.snapValue)) { return value }
+    if(isNaN(snapValue)) { return value }
     // play w this?
     var boost = 0; //0.4 * (value > element.scrollTop ? 1 : -1)
     return Math.round((value / snapValue) + boost) * snapValue;
